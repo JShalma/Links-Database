@@ -1,11 +1,13 @@
-import buildTree from '@/Components/dataStructure';
+// import buildTree from '@/Components/dataStructure';
 // import MainContent from '@/Components/main';
 // import NavBar from '@/Components/navbar';
 // import SideBar from '@/Components/sidebar';
-import { TreeNode } from '@/Components/types';
-import { Item, PrismaClient } from '@prisma/client';
-import Link from 'next/link';
+// import { TreeNode } from '@/Components/types';
+// import { Item, PrismaClient } from '@prisma/client';
+// import Link from 'next/link';
 // import Image from 'next/image';
+
+import Link from "next/link";
 
 // const prisma = new PrismaClient();
 
@@ -24,35 +26,8 @@ export default async function HomePage() {
   return (
     <main>
       <h1>Root Folder</h1>
-      {
-        childFolders.map((item) => <Link href={`/${item.id}`} key={item.id}>{item.name}</Link>)
-      }
-
-      {/* <NavBar /> */}
-
-      {/* <div className='flex'> */}
-
-      {/* <SideBar /> */}
-
-      {/* {codeStuff} */}
-
-      {/* <MainContent items={items} /> */}
-      {/* </div> */}
+      <Link href={"/folder/cc0f9c16-0a33-4667-b847-f633ab15f3c4"}>Root</Link>
       
-      {/* <ul>
-        {items.map((item) => (
-          <li key={item.id}>
-            <strong>{item.name}</strong> ({item.type})
-            {item.type === 'file' && item.fileData && (
-              <div>
-                <small>
-                  {item.fileData.url} • {item.fileData.img} 
-                </small>
-              </div>
-            )}
-          </li>
-        ))}
-      </ul> */}
     </main>
   );
 }

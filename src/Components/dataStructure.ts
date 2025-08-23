@@ -1,4 +1,4 @@
-import { Item, FileData, ItemType } from "@prisma/client";
+import { Item, FileData } from "@prisma/client";
 import { TreeNode } from "./types";
 
 type ItemWithFileData = Item & {
