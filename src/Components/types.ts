@@ -4,3 +4,29 @@ export type FileData = {
             img: string;
             description: string;
   } | null;
+
+export type Item = {
+    id: string;
+    name: string;
+    type: "file" | "folder";
+    parentId: string;
+    // fileData: null | FileData;
+}
+
+export type FileNode = {
+    id: string;
+    name: string;
+    type: "file";
+    parentId: string | null;
+    fileData: null | FileData;
+}
+
+export type FolderNode = {
+    id: string;
+    name: string;
+    type: "folder";
+    parentId: string | null;
+    children: TreeNode[];
+}
+
+export type TreeNode = FileNode | FolderNode;

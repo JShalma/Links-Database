@@ -1,5 +1,5 @@
 import { FileData, Item } from "@prisma/client";
-import NavBar from "./navbar";
+// import NavBar from "./navbar";
 
 type LinkItem = {
   items: (Item & { fileData: FileData })[];

@@ -1,33 +1,43 @@
-import MainContent from '@/Components/main';
-import NavBar from '@/Components/navbar';
-import SideBar from '@/Components/sidebar';
+import buildTree from '@/Components/dataStructure';
+// import MainContent from '@/Components/main';
+// import NavBar from '@/Components/navbar';
+// import SideBar from '@/Components/sidebar';
+import { TreeNode } from '@/Components/types';
 import { Item, PrismaClient } from '@prisma/client';
+import Link from 'next/link';
 // import Image from 'next/image';
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 
 export default async function HomePage() {
-  type FileData = {
-            itemId: string;
-            url: string;
-            img: string;
-            description: string;
-  } | null;
+  // type FileData = {
+  //           itemId: string;
+  //           url: string;
+  //           img: string;
+  //           description: string;
+  // } | null;
 
-  const items: (Item & { fileData: FileData })[] = await prisma.item.findMany({
-    include: { fileData: true },
-  });
+
+
 
   return (
     <main>
-      <NavBar />
+      <h1>Root Folder</h1>
+      {
+        childFolders.map((item) => <Link href={`/${item.id}`} key={item.id}>{item.name}</Link>)
+      }
 
-      <div className='flex'>
+      {/* <NavBar /> */}
 
-      <SideBar />
-      <MainContent items={items} />
-      </div>
+      {/* <div className='flex'> */}
+
+      {/* <SideBar /> */}
+
+      {/* {codeStuff} */}
+
+      {/* <MainContent items={items} /> */}
+      {/* </div> */}
       
       {/* <ul>
         {items.map((item) => (
