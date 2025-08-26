@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import NavBar from "@/Components/navbar";
 // import { PrismaClient } from "@prisma/client";
 // import buildTree from "@/Components/dataStructure";
 // import { TreeNode } from "@/Components/types";
@@ -65,6 +66,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <NavBar />
         {children}
       </body>
     </html>
