@@ -1,28 +1,6 @@
-// import buildTree from '@/Components/dataStructure';
-// import MainContent from '@/Components/main';
-// import NavBar from '@/Components/navbar';
-// import SideBar from '@/Components/sidebar';
-// import { TreeNode } from '@/Components/types';
-// import { Item, PrismaClient } from '@prisma/client';
-// import Link from 'next/link';
-// import Image from 'next/image';
-
 import Link from "next/link";
 
-// const prisma = new PrismaClient();
-
-
 export default async function HomePage() {
-  // type FileData = {
-  //           itemId: string;
-  //           url: string;
-  //           img: string;
-  //           description: string;
-  // } | null;
-
-
-
-
   return (
     <main>
       <h1>Root Folder</h1>

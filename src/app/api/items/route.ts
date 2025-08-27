@@ -22,6 +22,6 @@ export async function GET() {
             fileData: true,
         },
     });
-    console.log(items)
+    // console.log(items);
     return NextResponse.json(items);
 }

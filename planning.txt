@@ -1,0 +1,22 @@
+DATA ARCHITECTURE
+-----------------
+* /folder/[id]/page.tsx
+    * Fetches local data (currentFolder + immediate children)
+
+* /folder/[id]/layout.tsx
+    * Global for all folder pages
+    * Fetches global/complete data - folder-tree hierarchy
+    * Setup FolderTreeContext
+    * SideBar + Breadcrumb
+
+* FolderTreeContext.tsx
+    * tree
+    * currentFolder id
+    * setCurrentFolder: (id) =>
+    * addFolder: async ()
+    * deleteItem
+    * renameItem
+    * moveItem
+
+* server-actions.tsx
+    * Deals directly with database (Prisma)
