@@ -6,14 +6,11 @@ type ItemWithFileData = Item & {
 };
 
 export default function buildTree(items: ItemWithFileData[]) : TreeNode[]{
-    // console.log(items);
     const itemMap = new Map<string, TreeNode>();
     const roots: TreeNode[] = [];
 
     for (const item of items){
-        // const baseNode = {...item};
         const node : TreeNode = item.type === "folder" ? {...item, type: "folder", children: []} : {...item, type: "file"};
-        // console.log(node);
         itemMap.set(item.id, node);
     }
 
@@ -30,13 +27,4 @@ export default function buildTree(items: ItemWithFileData[]) : TreeNode[]{
         }
    }
    return roots;
-    // Attach children files to Parent folder
-    // loop through itemMap
-        // get id of item
-            // get parentID
-                // if parentID == null
-                    // add to root
-                //else
-                    // push item into parent child
-        
 }

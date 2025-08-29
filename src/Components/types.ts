@@ -1,17 +1,16 @@
 export type FileData = {
-            itemId: string;
-            url: string;
-            img: string;
-            description: string;
+    itemId: string;
+    url: string;
+    img: string;
+    description: string;
   } | null;
 
-export type Item = {
-    id: string;
-    name: string;
-    type: "file" | "folder";
-    parentId: string;
-    // fileData: null | FileData;
-}
+// export type Item = {
+//     id: string;
+//     name: string;
+//     type: "file" | "folder";
+//     parentId: string;
+// }
 
 export type FileNode = {
     id: string;

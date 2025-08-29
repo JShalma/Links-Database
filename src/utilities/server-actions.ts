@@ -1,5 +1,6 @@
 'use server';
 
+import { FileNodeInput } from "@/types/data";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -13,10 +14,81 @@ export async function getAllFolders(){
     return foldersData;
 }
 
-export async function getFolder(folderId:string) {
+export async function getFolderContent(folderId:string) {
     const children = await prisma.item.findMany({
         where: {parentId: folderId},
         include: {fileData: true}
     });
     return children;
+}
+
+export async function addFolder(folderName:string, parentId:string) {
+    const newFolder = await prisma.item.create({
+        data: {
+            name: folderName,
+            parentId,
+            type: 'folder'
+        }
+    })
+    return newFolder;
+}
+
+export async function addFile(fileName:string, fileURL:string, fileDescription:string, fileImg:string, parentId:string) {
+    const newFile = await prisma.item.create({
+        data: {
+            name: fileName,
+            type: "file",
+            parentId,
+            fileData: {
+                create: {
+                    url: fileURL,
+                    img: fileImg,
+                    description: fileDescription,
+                }
+            }
+        },
+        include: {
+            fileData: true,
+        }
+    })
+    return newFile;
+}
+
+export async function deleteFolder(folderId: string) {
+    const deletedFolder = await prisma.item.delete({
+        where: {
+            id: folderId,
+        }
+    })
+    return deletedFolder;
+}
+
+export async function deleteFile(fileId: string) {
+    const deletedFileData = await prisma.fileData.delete({
+        where: {
+            itemId: fileId,
+        },
+    })
+    const deletedFile = await prisma.item.delete({
+        where: {
+            id: fileId,
+        },
+    })
+    return {...deletedFile, fileData: deletedFileData};
+}
+
+export async function modifyFolder(folderId:string, folderName:string) {
+    const modifiedFolder = await prisma.item.update({
+        where: {id : folderId},
+        data: {name: folderName}
+    })
+    return modifiedFolder;
+}
+
+export async function modifyFile(fileId:string, modifiedContent:Partial<FileNodeInput>) {
+    const modifiedFile = await prisma.item.update({
+        where: {id : fileId},
+        data: {...modifiedContent}
+    })
+    return modifiedFile;
 }

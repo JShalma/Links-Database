@@ -1,12 +1,15 @@
 'use client';
 
 import { TreeNode } from "@/components/types";
+import { NodeInput } from "@/types/data";
 import { createContext, useState, useContext } from "react";
+import { addFile, addFolder } from "./server-actions";
+import { insertNode } from "./treeUtils";
 
 type FolderTreeContextType = {
     tree: TreeNode[];
     currentFolder: string;
-    addFolder: () => void;
+    addItem: (data: NodeInput) => void;
     deleteItem: () => void;
     renameItem: () => void;
     moveItem: () => void;
@@ -17,10 +20,25 @@ const FolderTreeContext = createContext<FolderTreeContextType | undefined>(undef
 // function FolderTreeProvider({ children, initialTree, currentFolderId} : {children: React.ReactNode; initialTree : TreeNode[]; currentFolderId: string}){
 export function FolderTreeProvider({ children, initialTree, currentFolderId } : {children: React.ReactNode; initialTree : TreeNode[]; currentFolderId: string}){
     // useState();
-    const [tree, setTree] = useState<TreeNode[]>([]);
+    const [tree, setTree] = useState<TreeNode[]>(initialTree);
     const [currentFolder, setCurrentFolder] = useState<string>(currentFolderId);
+    // console.log(tree);
+    async function addItem(data : NodeInput) { 
+        let result;
+        let node : TreeNode;
     
-    const addFolder = () => { console.log("Add")};
+        if (data.type === "file"){
+            result = await addFile(data.name, data.url, data.description, data.img, data.parentId);
+            node = {...result, type: "file"};
+        }
+        else {
+            result = await addFolder(data.name, data.parentId);
+            node = {...result, children: [], type:"folder"}
+        }
+
+        const updatedTree = insertNode(tree, node, data.parentId);
+        setTree(updatedTree);
+    };
     const deleteItem = () => { console.log("Delete")};
     const renameItem = () => { console.log("Rename")};
     const moveItem = () => { console.log("Modify")};
@@ -28,7 +46,7 @@ export function FolderTreeProvider({ children, initialTree, currentFolderId } : 
     const value : FolderTreeContextType = {
         tree,
         currentFolder,
-        addFolder,
+        addItem,
         deleteItem, 
         renameItem,
         moveItem,

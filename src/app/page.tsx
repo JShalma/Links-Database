@@ -4,7 +4,7 @@ export default async function HomePage() {
   return (
     <main>
       <h1>Root Folder</h1>
-      <Link href={"/folder/cc0f9c16-0a33-4667-b847-f633ab15f3c4"}>Root</Link>
+      <Link href={"/folder/6bfc1161-d799-4b46-b15b-0d9107adeb95"}>Root</Link>
       
     </main>
   );
