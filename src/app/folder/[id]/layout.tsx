@@ -7,10 +7,10 @@ export default async function FolderLayout({ children, params } : {children: Rea
     const foldersData = buildTree(flatData);
 
     return (
-        <div>
-        <FolderTreeProvider currentFolderId={params.id} initialTree={foldersData} >
-            {children}
-        </FolderTreeProvider>
+        <div className="container px-6">
+            <FolderTreeProvider currentFolderId={params.id} initialTree={foldersData} >
+                {children}
+            </FolderTreeProvider>
         </div>
     );
 }

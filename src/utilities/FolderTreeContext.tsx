@@ -2,13 +2,13 @@
 
 import { TreeNode } from "@/components/types";
 import { NodeInput } from "@/types/data";
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import { addFile, addFolder, deleteFile, deleteFolder, modifyFile, modifyFolder } from "./server-actions";
-import { deleteNode, insertNode, modifyNode, updateTree } from "./treeUtils";
+import { deleteNode, getFolder, insertNode, modifyNode, updateTree } from "./treeUtils";
 
 type FolderTreeContextType = {
     tree: TreeNode[];
-    currentFolder: string;
+    currentFolder: TreeNode;
     addItem: (data: NodeInput) => void;
     deleteItem: (id: string, type: string) => void;
     modifyItem: (data: NodeInput) => void;
@@ -17,12 +17,19 @@ type FolderTreeContextType = {
 
 const FolderTreeContext = createContext<FolderTreeContextType | undefined>(undefined);
 
-// function FolderTreeProvider({ children, initialTree, currentFolderId} : {children: React.ReactNode; initialTree : TreeNode[]; currentFolderId: string}){
 export function FolderTreeProvider({ children, initialTree, currentFolderId } : {children: React.ReactNode; initialTree : TreeNode[]; currentFolderId: string}){
-    // useState();
     const [tree, setTree] = useState<TreeNode[]>(initialTree);
-    const [currentFolder, setCurrentFolder] = useState<string>(currentFolderId);
-    // console.log(tree);
+    const [currentFolder, setCurrentFolder] = useState<TreeNode>(tree[0]);
+
+    useEffect(() => {
+        const folder = getFolder(tree, currentFolderId);
+        console.log(folder);
+        console.log(currentFolderId);
+        if (Object.keys(folder).length !== 0){
+            setCurrentFolder(folder);
+        }
+    }, [tree, currentFolderId]);
+    
     async function addItem(data : NodeInput) { 
         let result;
         let node : TreeNode;
@@ -38,8 +45,8 @@ export function FolderTreeProvider({ children, initialTree, currentFolderId } : 
 
         const updatedTree = updateTree(tree, insertNode, data.parentId, node);
         setTree(updatedTree);
-        console.log(updatedTree);
     };
+
     async function deleteItem(id: string, type: string) { 
         let result;
         let node : TreeNode;
@@ -54,8 +61,8 @@ export function FolderTreeProvider({ children, initialTree, currentFolderId } : 
         }
         const updatedTree = updateTree(tree, deleteNode, id, node);
         setTree(updatedTree);
-        console.log(updatedTree);
      };
+
      async function modifyItem(data: NodeInput) { 
         let result;
         let node : TreeNode;
@@ -71,25 +78,11 @@ export function FolderTreeProvider({ children, initialTree, currentFolderId } : 
 
         const updatedTree = updateTree(tree, modifyNode, data.id ?? "", node);
         setTree(updatedTree);
-        console.log(updatedTree);
      }
-    //     let result;
-    //     let node : TreeNode;
     
-    //     if (data.type === "file"){
-    //         result = await modifyFile(data.id, data);
-    //         node = {...result, type: "file"};
-    //     }
-    //     else {
-    //         result = await deleteFolder(data.id, data);
-    //         node = {...result, children: [], type:"folder"}
-    //     }
-    //     const updatedTree = updateTree(tree, modifyNode, id, node);
-    //     setTree(updatedTree);
-    //     console.log(updatedTree);
-    //  };
-    // const renameItem = () => { console.log("Rename")};
     const moveItem = () => { console.log("Modify")};
+
+
 
     const value : FolderTreeContextType = {
         tree,
