@@ -1,7 +1,7 @@
 'use client'
 
 import Folder from "@/components/folder";
-import Link from "next/link";
+// import Link from "next/link";
 import { useFolderTree } from "@/utilities/FolderTreeContext";
 import { FileNode, TreeNode } from "@/components/types";
 import File from "@/components/file";
