@@ -3,15 +3,15 @@
 import { TreeNode } from "@/components/types";
 import { NodeInput } from "@/types/data";
 import { createContext, useState, useContext } from "react";
-import { addFile, addFolder } from "./server-actions";
-import { insertNode } from "./treeUtils";
+import { addFile, addFolder, deleteFile, deleteFolder, modifyFile, modifyFolder } from "./server-actions";
+import { deleteNode, insertNode, modifyNode, updateTree } from "./treeUtils";
 
 type FolderTreeContextType = {
     tree: TreeNode[];
     currentFolder: string;
     addItem: (data: NodeInput) => void;
-    deleteItem: () => void;
-    renameItem: () => void;
+    deleteItem: (id: string, type: string) => void;
+    modifyItem: (data: NodeInput) => void;
     moveItem: () => void;
 }
 
@@ -36,11 +36,59 @@ export function FolderTreeProvider({ children, initialTree, currentFolderId } : 
             node = {...result, children: [], type:"folder"}
         }
 
-        const updatedTree = insertNode(tree, node, data.parentId);
+        const updatedTree = updateTree(tree, insertNode, data.parentId, node);
         setTree(updatedTree);
+        console.log(updatedTree);
     };
-    const deleteItem = () => { console.log("Delete")};
-    const renameItem = () => { console.log("Rename")};
+    async function deleteItem(id: string, type: string) { 
+        let result;
+        let node : TreeNode;
+    
+        if (type === "file"){
+            result = await deleteFile(id ?? "");
+            node = {...result, type: "file"};
+        }
+        else {
+            result = await deleteFolder(id ?? "");
+            node = {...result, children: [], type:"folder"}
+        }
+        const updatedTree = updateTree(tree, deleteNode, id, node);
+        setTree(updatedTree);
+        console.log(updatedTree);
+     };
+     async function modifyItem(data: NodeInput) { 
+        let result;
+        let node : TreeNode;
+    
+        if (data.type === "file"){
+            result = await modifyFile(data.id ?? "", data.name, data.url, data.description, data.img, data.parentId);
+            node = {...result, type: "file"};
+        }
+        else {
+            result = await modifyFolder(data.id ?? "", data.parentId);
+            node = {...result, children: [], type:"folder"}
+        }
+
+        const updatedTree = updateTree(tree, modifyNode, data.id ?? "", node);
+        setTree(updatedTree);
+        console.log(updatedTree);
+     }
+    //     let result;
+    //     let node : TreeNode;
+    
+    //     if (data.type === "file"){
+    //         result = await modifyFile(data.id, data);
+    //         node = {...result, type: "file"};
+    //     }
+    //     else {
+    //         result = await deleteFolder(data.id, data);
+    //         node = {...result, children: [], type:"folder"}
+    //     }
+    //     const updatedTree = updateTree(tree, modifyNode, id, node);
+    //     setTree(updatedTree);
+    //     console.log(updatedTree);
+    //  };
+    // const renameItem = () => { console.log("Rename")};
     const moveItem = () => { console.log("Modify")};
 
     const value : FolderTreeContextType = {
@@ -48,7 +96,7 @@ export function FolderTreeProvider({ children, initialTree, currentFolderId } : 
         currentFolder,
         addItem,
         deleteItem, 
-        renameItem,
+        modifyItem,
         moveItem,
     };
 

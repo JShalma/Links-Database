@@ -1,6 +1,5 @@
 'use server';
 
-import { FileNodeInput } from "@/types/data";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -85,10 +84,16 @@ export async function modifyFolder(folderId:string, folderName:string) {
     return modifiedFolder;
 }
 
-export async function modifyFile(fileId:string, modifiedContent:Partial<FileNodeInput>) {
+export async function modifyFile(fileId:string, fileName:string, fileURL:string, fileDescription:string, fileImg:string, parentId:string ) {
+    
     const modifiedFile = await prisma.item.update({
         where: {id : fileId},
-        data: {...modifiedContent}
+        data: {name: fileName, parentId}
     })
-    return modifiedFile;
+    const modifiedFileData = await prisma.fileData.update({
+        where: {itemId : fileId},
+        data: {url: fileURL, description: fileDescription, img: fileImg}
+    })
+
+    return {...modifiedFile, fileData: modifiedFileData};
 }

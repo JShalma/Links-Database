@@ -6,6 +6,7 @@ export type ItemWithFileData = Item & {
 
 export type FileNodeInput = {
   type: "file";
+  id?: string;
   name: string;
   parentId: string;
   url: string;
@@ -15,6 +16,7 @@ export type FileNodeInput = {
 
 export type FolderNodeInput = {
   type: "folder";
+  id?: string;
   name: string;
   parentId: string;
 }
