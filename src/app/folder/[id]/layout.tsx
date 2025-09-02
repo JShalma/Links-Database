@@ -1,3 +1,5 @@
+import NavBar from "@/components/navBar";
+import SideBar from "@/components/sideBar";
 import buildTree from "@/components/tree";
 import { FolderTreeProvider } from "@/utilities/FolderTreeContext";
 import { getAllFolders } from "@/utilities/server-actions";
@@ -7,9 +9,14 @@ export default async function FolderLayout({ children, params } : {children: Rea
     const foldersData = buildTree(flatData);
 
     return (
-        <div className="container px-6">
+        // container px-6 my-6 border
+        <div className="flex flex-col h-screen">
             <FolderTreeProvider currentFolderId={params.id} initialTree={foldersData} >
-                {children}
+                <NavBar />
+                <div className="flex flex-grow">
+                    <SideBar />
+                    {children}
+                </div>
             </FolderTreeProvider>
         </div>
     );

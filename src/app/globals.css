@@ -1,7 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FFFCFB;
+  /* --background: #FFFCFB; */
+  /* --background:#F8F9FA ;
+  --accent-gray:#F1F3F5; */
+  /* --accent-gray: #f2efee; */
+  --bg-100: #F8FAFC;
+  --bg-200: #F9F9F7;
+  --bg-300: #FDF8F3;
+  --bg-400: #FCF4EA;
   --font-color: #000000;
   --orange: #FF925A;
   --blue:#9CE1FF;
@@ -13,7 +20,7 @@
 
 
 body {
-  background: var(--background);
+  background: var(--bg-200);
   color: var(--font-color);
   /* font-family: Arial, Helvetica, sans-serif; */
 }
@@ -29,4 +36,35 @@ body {
 
 .orange{
   background-color: var(--orange);
+}
+.blue{
+  background-color: var(--blue);
+}
+.folder-page-bg{
+  background-color: var(--bg-100);
+}
+.gray{
+  background-color: var(--bg-200);
+}
+.gray:hover{
+  background-color: var(--bg-400);
+}
+.red-border{
+  border: 2px solid red;
+}
+
+.black-border{
+  border: 2px solid var(--font-color);
+}
+.category-btn{
+  /* color: var(--blue); */
+  background-color: rgba(156, 225, 255, 0.75);
+  padding: 0.25rem 0.75rem;
+  width: fit-content;
+  border-radius: 25px;
+}
+.description{
+  padding-top: 0.5rem;
+  font-size:small;
+  color: rgba(0, 0, 0, 0.55);
 }
