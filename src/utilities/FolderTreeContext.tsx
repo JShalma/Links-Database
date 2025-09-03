@@ -1,7 +1,7 @@
 'use client';
 
 import { TreeNode } from "@/components/types";
-import { NodeInput } from "@/types/data";
+import { BreadcrumbObj, NodeInput } from "@/types/data";
 import { createContext, useState, useContext, useEffect } from "react";
 import { addFile, addFolder, deleteFile, deleteFolder, modifyFile, modifyFolder } from "./server-actions";
 import { deleteNode, getFolder, insertNode, modifyNode, updateTree } from "./treeUtils";
@@ -9,6 +9,7 @@ import { deleteNode, getFolder, insertNode, modifyNode, updateTree } from "./tre
 type FolderTreeContextType = {
     tree: TreeNode[];
     currentFolder: TreeNode;
+    breadcrumbs: BreadcrumbObj[];
     addItem: (data: NodeInput) => void;
     deleteItem: (id: string, type: string) => void;
     modifyItem: (data: NodeInput) => void;
@@ -20,13 +21,15 @@ const FolderTreeContext = createContext<FolderTreeContextType | undefined>(undef
 export function FolderTreeProvider({ children, initialTree, currentFolderId } : {children: React.ReactNode; initialTree : TreeNode[]; currentFolderId: string}){
     const [tree, setTree] = useState<TreeNode[]>(initialTree);
     const [currentFolder, setCurrentFolder] = useState<TreeNode>(tree[0]);
+    const [path, setPath] = useState<BreadcrumbObj[]>([{name: "", id: ""}]);
 
     useEffect(() => {
-        const folder = getFolder(tree, currentFolderId);
-        console.log(folder);
-        console.log(currentFolderId);
-        if (Object.keys(folder).length !== 0){
-            setCurrentFolder(folder);
+        const {folderNode, path:breadcrumb} = getFolder(tree, currentFolderId);
+        // console.log(folder);
+        // console.log(currentFolderId);
+        if (Object.keys(folderNode).length !== 0){
+            setCurrentFolder(folderNode);
+            setPath(breadcrumb);
         }
     }, [tree, currentFolderId]);
     
@@ -87,6 +90,7 @@ export function FolderTreeProvider({ children, initialTree, currentFolderId } : 
     const value : FolderTreeContextType = {
         tree,
         currentFolder,
+        breadcrumbs: path,
         addItem,
         deleteItem, 
         modifyItem,

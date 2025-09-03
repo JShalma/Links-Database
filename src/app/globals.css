@@ -72,3 +72,8 @@ body {
   background-color: var(--bg-400);
   width: 50%;
 }
+.breadcrumb:hover{
+  background-color: rgba(247, 154, 211, 0.15);
+  color: var(--pink);
+  /* padding: 0.25rem; */
+}

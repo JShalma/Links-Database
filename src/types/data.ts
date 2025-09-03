@@ -21,4 +21,9 @@ export type FolderNodeInput = {
   parentId: string;
 }
 
+export type BreadcrumbObj = {
+  name: string;
+  id: string;
+}
+
 export type NodeInput = FileNodeInput | FolderNodeInput;

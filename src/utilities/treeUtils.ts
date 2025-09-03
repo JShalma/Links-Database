@@ -1,4 +1,5 @@
 import { TreeNode } from "@/components/types";
+import { BreadcrumbObj } from "@/types/data";
 
 type callbackReturn = TreeNode | null;
 
@@ -61,7 +62,7 @@ export function modifyNode(node:TreeNode, context:TreeNode){
 
 export function getFolder(tree:TreeNode[], folderId:string){
     let folderNode = {};
-
+    const path:BreadcrumbObj[] = [];
     for (const node of tree){
         if (node.type === "file"){
             continue;
@@ -69,12 +70,16 @@ export function getFolder(tree:TreeNode[], folderId:string){
             if (node.id === folderId){
                 folderNode = node;
             } else{
-                const result = getFolder(node.children, folderId);
+                const {folderNode:result, path:breadcrumbs} = getFolder(node.children, folderId);
                 if (Object.keys(result).length !== 0){
                     folderNode = result;
+                    // path.concat(breadcrumbs);
+                    path.push({name: node.name, id: node.id}, ...breadcrumbs);
+
+                    // console.log(path);
                 }
             }
         }
     }
-    return folderNode;
+    return {folderNode, path};
 }
