@@ -1,7 +1,6 @@
 'use client'
 
 import Folder from "@/components/folder";
-// import Link from "next/link";
 import { useFolderTree } from "@/utilities/FolderTreeContext";
 import { FileNode, TreeNode } from "@/components/types";
 import File from "@/components/file";
@@ -10,14 +9,12 @@ import Breadcrumb from "@/components/breadcrumbs";
 // { params } : { params : {id : string}}
 export default function FolderPage(){
     const { currentFolder, breadcrumbs } = useFolderTree();
-    // console.log(breadcrumbs);
     function checkEmpty(type:string){
         if (currentFolder.type === "folder"){
             if (currentFolder.children.filter(child => child.type === type).length === 0){
                 return <p className="opacity-50 pt-2">No {type}s</p>;
             }
         }
-
         return <></>;
     }
 
@@ -30,13 +27,11 @@ export default function FolderPage(){
     }
 
     return (
-    <div className="flex-grow folder-page-bg rounded-2xl black-border mr-3 mb-2 max-h-[23/24] overflow-y-scroll">
+    <div className="flex-grow folder-page-bg rounded-2xl black-border mr-5 mb-3 overflow-y-scroll">
         <section className="p-5 h-full">
             
             <Breadcrumb paths={[...breadcrumbs , {name: currentFolder.name, id: currentFolder.id}]} />
-            {/* <div>
-
-            </div> */}
+   
             <article className="pt-5">
                 <h1 className="category-btn black-border">Folders</h1>
                 {checkEmpty("folder")}
