@@ -29,7 +29,7 @@ export default function FolderPage(){
     }
 
     return (
-    <div className="flex-grow folder-page-bg rounded-2xl black-border mr-3 mb-3 max-h-screen overflow-y-scroll">
+    <div className="flex-grow folder-page-bg rounded-2xl black-border mr-3 mb-2 h-11/12 overflow-y-scroll">
         <section className="p-5 h-full">
             <h1 className="text-2xl">{ currentFolder.name } Directory</h1>
             {/* <div>
@@ -45,7 +45,7 @@ export default function FolderPage(){
             <article className="pt-5">
                 <h2 className="category-btn black-border">Files</h2>
                 {checkEmpty("file")}
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-auto-rows-fr grid-cols-4 gap-4">
                     {currentFolder.type === "folder" && currentFolder.children.map((child) => child.type === "file" && createFile(child) )}
                 </div>
             </article>

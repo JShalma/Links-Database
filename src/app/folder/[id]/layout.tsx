@@ -10,7 +10,7 @@ export default async function FolderLayout({ children, params } : {children: Rea
 
     return (
         // container px-6 my-6 border
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col h-screen overflow-y-hidden">
             <FolderTreeProvider currentFolderId={params.id} initialTree={foldersData} >
                 <NavBar />
                 <div className="flex flex-grow">
