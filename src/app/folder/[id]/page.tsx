@@ -5,6 +5,7 @@ import { useFolderTree } from "@/utilities/FolderTreeContext";
 import File from "@/components/file";
 import Breadcrumb from "@/components/breadcrumbs";
 import { useState } from "react";
+import EditPanel from "@/components/editPanel";
 
 // { params } : { params : {id : string}}
 export default function FolderPage(){
@@ -28,7 +29,11 @@ export default function FolderPage(){
             <Breadcrumb paths={[...breadcrumbs , {name: currentFolder.name, id: currentFolder.id}]} />
    
             <article className="pt-5">
-                <h1 className="category-btn black-border">Folders</h1>
+                <div className={`h-11 ${isSelected && "black-border category-btn min-w-full"}`}>
+                    {isSelected ? <EditPanel /> :
+                    <h1 className="category-btn black-border">Folders</h1>
+                    }
+                </div>
                 {checkEmpty("folder")}
                 <div className="grid grid-cols-4 gap-4">
                     {currentFolder.type === "folder" && currentFolder.children.map((child) => child.type === "folder" && <Folder content={child} key={child.id} isSelected={isSelected === child.id} onSelect={(value:string) => setIsSelected(value)} /> )}

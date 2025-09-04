@@ -59,7 +59,7 @@ body {
 }
 .category-btn{
   /* color: var(--blue); */
-  background-color: rgba(156, 225, 255, 0.75);
+  background-color: rgba(156, 225, 255, 0.5);
   padding: 0.25rem 0.75rem;
   width: fit-content;
   border-radius: 25px;
@@ -77,4 +77,8 @@ body {
   background-color: rgba(247, 154, 211, 0.15);
   color: var(--pink);
   /* padding: 0.25rem; */
+}
+.edit-btn:hover{
+  background-color: rgba(156, 225, 255, 1);
+  cursor: pointer;
 }
