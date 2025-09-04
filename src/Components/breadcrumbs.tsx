@@ -8,11 +8,11 @@ export default function Breadcrumb({ paths } : {paths: BreadcrumbObj[]}){
     // console.log(paths);
     return (
         <div className="flex">
-            { paths.map((item) => 
+            { paths.map((item, index) => 
                 <div key={`${item.id}-breadcrumb`} className="flex">
                     <Link href={`/folder/${item.id}`} className="breadcrumb rounded-2xl">
                         <h1 className="text-2xl px-3">{item.name}</h1>
-                    </Link> <span className="text-2xl">&nbsp;/&nbsp;</span></div>
+                    </Link> { index + 1 !== paths.length && <span className="text-2xl">&nbsp;/&nbsp;</span>}</div>
             )}
         </div>
     );

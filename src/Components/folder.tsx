@@ -1,16 +1,25 @@
 'use client';
 
+import { useRouter } from "next/navigation";
 // import { useFolderTree } from "@/utilities/FolderTreeContext";
 import { TreeNode } from "./types";
 import Link from "next/link";
+import { MouseEvent } from "react";
 
-export default function Folder({ content } : {content: TreeNode}){
-    // const { addItem, deleteItem, modifyItem } = useFolderTree();
+export default function Folder({ content, isSelected, onSelect } : { content: TreeNode, isSelected:boolean, onSelect:(value:string) => void }){
+    // const [isSelected, setIsSelected] = useState(false);
+    const router = useRouter();
     
+    // const { addItem, deleteItem, modifyItem } = useFolderTree();
+    const handleDoubleClick =(e: MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();        
+        router.push(`/folder/${content.id}`);
+    }
+
     return (
         <div className="py-3">
-            <Link href={`/folder/${content.id}`}>
-                <div className="gray p-3 flex justify-between items-center rounded-xl black-border">
+            <Link href={""}>
+                <div className="gray p-3 flex justify-between items-center rounded-xl black-border" style={ isSelected ? {backgroundColor: '#FCF4EA'} : {}} onClick={() => isSelected ? onSelect("") : onSelect(content.id)} onDoubleClick={handleDoubleClick}>
                     <div className="flex gap-4">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-folder-fill" viewBox="0 0 16 16">
                             <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3m-8.322.12q.322-.119.684-.12h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981z"/>

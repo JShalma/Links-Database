@@ -2,13 +2,16 @@
 
 import Folder from "@/components/folder";
 import { useFolderTree } from "@/utilities/FolderTreeContext";
-import { FileNode, TreeNode } from "@/components/types";
 import File from "@/components/file";
 import Breadcrumb from "@/components/breadcrumbs";
+import { useState } from "react";
 
 // { params } : { params : {id : string}}
 export default function FolderPage(){
     const { currentFolder, breadcrumbs } = useFolderTree();
+    const [isSelected, setIsSelected] = useState('');
+
+
     function checkEmpty(type:string){
         if (currentFolder.type === "folder"){
             if (currentFolder.children.filter(child => child.type === type).length === 0){
@@ -16,14 +19,6 @@ export default function FolderPage(){
             }
         }
         return <></>;
-    }
-
-    function createFolder(item : TreeNode){
-        return <Folder content={item} key={item.id} />
-    }
-
-    function createFile(item : FileNode){
-        return <File content={item} key={item.id} />
     }
 
     return (
@@ -36,14 +31,14 @@ export default function FolderPage(){
                 <h1 className="category-btn black-border">Folders</h1>
                 {checkEmpty("folder")}
                 <div className="grid grid-cols-4 gap-4">
-                    {currentFolder.type === "folder" && currentFolder.children.map((child) => child.type === "folder" && createFolder(child) )}
+                    {currentFolder.type === "folder" && currentFolder.children.map((child) => child.type === "folder" && <Folder content={child} key={child.id} isSelected={isSelected === child.id} onSelect={(value:string) => setIsSelected(value)} /> )}
                 </div>
             </article>
             <article className="pt-5">
                 <h2 className="category-btn black-border">Files</h2>
                 {checkEmpty("file")}
                 <div className="grid grid-auto-rows-fr grid-cols-4 gap-4">
-                    {currentFolder.type === "folder" && currentFolder.children.map((child) => child.type === "file" && createFile(child) )}
+                    {currentFolder.type === "folder" && currentFolder.children.map((child) => child.type === "file" && <File content={child} key={child.id} /> )}
                 </div>
             </article>
 
