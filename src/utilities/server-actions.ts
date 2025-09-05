@@ -59,6 +59,11 @@ export async function deleteFolder(folderId: string) {
             id: folderId,
         }
     })
+    await prisma.item.deleteMany({
+        where: {
+            parentId: folderId,
+        }
+    })
     return deletedFolder;
 }
 

@@ -31,7 +31,10 @@ export default function FolderPage(){
             return <DeleteModal/>
         } 
         else if (modeType === 2){
-            return <EditModal type="folder"/>;
+            console.log(isSelected, currentFolder);
+            if (currentFolder.type === "folder"){
+                return <EditModal content={currentFolder.children.find((element) => element.id === isSelected) ?? currentFolder} />;
+            }
         }
         else if (modeType === 3){
             return "";
