@@ -6,11 +6,14 @@ import File from "@/components/file";
 import Breadcrumb from "@/components/breadcrumbs";
 import { useState } from "react";
 import EditPanel from "@/components/editPanel";
+import Modal from "@/components/modal";
+import EditModal from "@/components/editModal";
 
 // { params } : { params : {id : string}}
 export default function FolderPage(){
     const { currentFolder, breadcrumbs } = useFolderTree();
     const [isSelected, setIsSelected] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
 
     function checkEmpty(type:string){
@@ -30,7 +33,7 @@ export default function FolderPage(){
    
             <article className="pt-5">
                 <div className={`h-11 ${isSelected && "black-border category-btn min-w-full"}`}>
-                    {isSelected ? <EditPanel /> :
+                    {isSelected ? <EditPanel></EditPanel> :
                     <h1 className="category-btn black-border">Folders</h1>
                     }
                 </div>
@@ -46,6 +49,8 @@ export default function FolderPage(){
                     {currentFolder.type === "folder" && currentFolder.children.map((child) => child.type === "file" && <File content={child} key={child.id} /> )}
                 </div>
             </article>
+            <button onClick={() => setIsModalOpen(true)} style={{cursor: "pointer", backgroundColor:"red"}}>Open Button</button>
+            { isModalOpen && <Modal setIsModalOpen={setIsModalOpen}><EditModal type="folder"/></Modal>}
 
         </section>
     </div>

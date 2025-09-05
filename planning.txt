@@ -26,3 +26,23 @@ BREADCRUMB
 * How would I get the path to the node?
     * After the getFolder finds the node, it bubbles back the answer, so maybe what I can do is add some side thing to it so that it 
     automatically creates the breadcrumb path at the same time.
+
+
+MODAL
+-----
+* General modal = necessary
+* Specific modals with forms (+ functions)
+    * Rename = generally geared toward folder (one input)
+        * Rename File = multiple inputs 
+    
+* Rename:
+    * Folder/File Name
+    * File URL
+    * File Img
+    * File Description
+
+Rename would be a general component that's exclusively for Folder, but if the type is file, then it has a component called EditFile that it
+can render. That would still be inside the form. The okay (/modify) button is inside the Rename component. It will have a function that 
+onClick sends the data (either file or folder) to the server. Where does the data be stored then? The editFile data might need to be passed
+back up or stay in the parent (Rename) component in order to minimize problems. The data would need to be a controlled elements with 
+useState. But some useState might be optional.
