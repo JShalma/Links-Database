@@ -7,13 +7,14 @@ import Breadcrumb from "@/components/breadcrumbs";
 import { useState } from "react";
 import EditPanel from "@/components/editPanel";
 import Modal from "@/components/modal";
-import EditModal from "@/components/editModal";
+import EditModal, { DeleteModal } from "@/components/modalContent";
 
 // { params } : { params : {id : string}}
 export default function FolderPage(){
     const { currentFolder, breadcrumbs } = useFolderTree();
     const [isSelected, setIsSelected] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [ modeType, setModeType ] = useState(0);
 
 
     function checkEmpty(type:string){
@@ -25,6 +26,18 @@ export default function FolderPage(){
         return <></>;
     }
 
+    function displayModalContent(){
+        if (modeType === 1){
+            return <DeleteModal/>
+        } 
+        else if (modeType === 2){
+            return <EditModal type="folder"/>;
+        }
+        else if (modeType === 3){
+            return "";
+        }
+    }
+
     return (
     <div className="flex-grow folder-page-bg rounded-2xl black-border mr-5 mb-3 overflow-y-scroll">
         <section className="p-5 h-full">
@@ -33,7 +46,7 @@ export default function FolderPage(){
    
             <article className="pt-5">
                 <div className={`h-11 ${isSelected && "black-border category-btn min-w-full"}`}>
-                    {isSelected ? <EditPanel></EditPanel> :
+                    {isSelected ? <EditPanel onEdit={(modeType:number) => {setIsModalOpen(true); setModeType(modeType)}} onClose={() => setIsSelected('') } /> :
                     <h1 className="category-btn black-border">Folders</h1>
                     }
                 </div>
@@ -49,8 +62,8 @@ export default function FolderPage(){
                     {currentFolder.type === "folder" && currentFolder.children.map((child) => child.type === "file" && <File content={child} key={child.id} /> )}
                 </div>
             </article>
-            <button onClick={() => setIsModalOpen(true)} style={{cursor: "pointer", backgroundColor:"red"}}>Open Button</button>
-            { isModalOpen && <Modal setIsModalOpen={setIsModalOpen}><EditModal type="folder"/></Modal>}
+            {/* <button onClick={() => setIsModalOpen(true)} style={{cursor: "pointer", backgroundColor:"red"}}>Open Button</button> */}
+            { isModalOpen && <Modal setIsModalOpen={setIsModalOpen}>{displayModalContent()}</Modal>}
 
         </section>
     </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 
 export default function EditModal({ type } : { type:string }){
     // const [name, setName] = useState();
@@ -33,5 +33,17 @@ function EditFile(){
             <label>Description</label>
             <input type="text" className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full " />
         </>
+    );
+}
+
+export function DeleteModal(){
+    return (
+        <div>
+            {/* <h1>Confi</h1> */}
+            <form>
+                <p>You can't go back after deleting.</p>
+                <button>Delete</button>
+            </form> 
+        </div>
     );
 }

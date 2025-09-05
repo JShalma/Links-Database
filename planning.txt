@@ -46,3 +46,6 @@ can render. That would still be inside the form. The okay (/modify) button is in
 onClick sends the data (either file or folder) to the server. Where does the data be stored then? The editFile data might need to be passed
 back up or stay in the parent (Rename) component in order to minimize problems. The data would need to be a controlled elements with 
 useState. But some useState might be optional.
+
+Clicking the btns opens the modal, but now how do I tell the modal which specific modalContent to render? Could create a state that can be
+updated based on what you click. Click delete would update state to 1, and if it's one render this item on the modal.
