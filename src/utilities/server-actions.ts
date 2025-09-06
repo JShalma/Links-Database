@@ -1,6 +1,7 @@
 'use server';
 
 import { PrismaClient } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
 export async function getAllFolders(){
@@ -13,13 +14,13 @@ export async function getAllFolders(){
     return foldersData;
 }
 
-export async function getFolderContent(folderId:string) {
-    const children = await prisma.item.findMany({
-        where: {parentId: folderId},
-        include: {fileData: true}
-    });
-    return children;
-}
+// export async function getFolderContent(folderId:string) {
+//     const children = await prisma.item.findMany({
+//         where: {parentId: folderId},
+//         include: {fileData: true}
+//     });
+//     return children;
+// }
 
 export async function addFolder(folderName:string, parentId:string) {
     const newFolder = await prisma.item.create({
@@ -59,6 +60,7 @@ export async function deleteFolder(folderId: string) {
             id: folderId,
         }
     })
+    // Needs to delete fileData too!!
     await prisma.item.deleteMany({
         where: {
             parentId: folderId,

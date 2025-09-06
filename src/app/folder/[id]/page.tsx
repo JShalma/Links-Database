@@ -62,7 +62,7 @@ export default function FolderPage(){
                 <h2 className="category-btn black-border">Files</h2>
                 {checkEmpty("file")}
                 <div className="grid grid-auto-rows-fr grid-cols-4 gap-4">
-                    {currentFolder.type === "folder" && currentFolder.children.map((child) => child.type === "file" && <File content={child} key={child.id} /> )}
+                    {currentFolder.type === "folder" && currentFolder.children.map((child) => child.type === "file" && <File content={child} key={child.id} isSelected={isSelected === child.id} onSelect={(value:string) => setIsSelected(value)} /> )}
                 </div>
             </article>
             {/* <button onClick={() => setIsModalOpen(true)} style={{cursor: "pointer", backgroundColor:"red"}}>Open Button</button> */}
