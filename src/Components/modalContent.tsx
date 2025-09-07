@@ -7,8 +7,8 @@ type dataFile = {
     image: string,
     description: string
 }
-
-export default function EditModal({ content, onModify } : { content: TreeNode, onModify: (data:NodeInput) => void }){
+// { setIsModalOpen, children } : {setIsModalOpen: (open:boolean) => void, children: React.ReactNode}
+export default function EditModal({ content, setIsModalOpen,  onModify } : { content: TreeNode, setIsModalOpen:(open:boolean) => void, onModify: (data:NodeInput) => void }){
     const [name, setName] = useState(content.name);
 
     const [url, setURL] = useState(() => {
@@ -43,6 +43,7 @@ export default function EditModal({ content, onModify } : { content: TreeNode, o
         e.preventDefault();
         if (content.type === "file"){
             const {fileData, ...newObject} = content;
+
             onModify({...newObject, parentId:content.parentId ?? "", name, img:image, url, description});
         } else {
             const {children, ...newObject} = content;
@@ -52,19 +53,28 @@ export default function EditModal({ content, onModify } : { content: TreeNode, o
     }
 
     return (
-        
         <div>
-            <form className="flex flex-col gap-4">
-                <div>
-                    <label>Name</label>
-                    <input className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={name} onChange={(e) => setName(e.target.value)} />
-                </div>
-                {content.type === "file" && <EditFile fileData={{url, image, description}} handleURL={setURL} handleDescription={setDescription} handleImage={setImage} />}
-                    <div className="flex justify-end gap-7">
-                        <button>Cancel</button>
-                        <button className="category-btn black-border cursor-pointer" onClick={handleSubmit}>Ok</button>
+            <div className="flex gap-2 justify-between">
+                <h1 className="text-2xl">Rename {content.type}</h1>
+                <button onClick={() => setIsModalOpen(false)} className="self-end rounded-3xl hover:bg-(--bg-400) cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-x" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </button>
+            </div>
+            <div className="py-5">
+                <form className="flex flex-col gap-4">
+                    <div>
+                        <label>Name</label>
+                        <input className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={name} onChange={(e) => setName(e.target.value)} />
                     </div>
-            </form>
+                    {content.type === "file" && <EditFile fileData={{url, image, description}} handleURL={setURL} handleDescription={setDescription} handleImage={setImage} />}
+                        <div className="flex justify-end gap-7">
+                            <button className="cursor-pointer" onClick={() => setIsModalOpen(false)}>Cancel</button>
+                            <button className="category-btn black-border cursor-pointer" onClick={handleSubmit}>Ok</button>
+                        </div>
+                </form>
+            </div>
         </div>
     );
 }
@@ -88,25 +98,35 @@ function EditFile({ fileData, handleURL, handleImage, handleDescription }: {file
     );
 }
 
-export function DeleteModal({ content, onDelete } : { content: TreeNode, onDelete: (id:string, type:string) => void }){
+export function DeleteModal({ content, setIsModalOpen, onDelete } : { content: TreeNode,  setIsModalOpen:(open:boolean) => void, onDelete: (id:string, type:string) => void }){
     function handleDelete(e: MouseEvent){
         e.preventDefault();
         onDelete(content.id, content.type);
     }
     return (
         <div>
-            <form>
-                <p>Are you sure you want to permanently delete {content.name} {content.type}? <br/><br/>You will be unable recover this item after deleting.</p>
-                <div className="flex justify-end gap-7 mt-5">
-                    <button className="cursor-pointer">Cancel</button>
-                    <button className="category-btn black-border cursor-pointer" onClick={handleDelete}>Delete</button>
-                </div>
-            </form> 
+            <div className="flex gap-2 justify-between">
+                <h1 className="text-2xl">Delete {content.type}</h1>
+                <button onClick={() => setIsModalOpen(false)} className="self-end rounded-3xl hover:bg-(--bg-400) cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-x" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </button>
+            </div>
+            <div className="py-5">
+                <form>
+                    <p>Are you sure you want to permanently delete {content.name} {content.type}? <br/><br/>You will be unable recover this item after deleting.</p>
+                    <div className="flex justify-end gap-7 mt-5">
+                        <button className="cursor-pointer" onClick={() => setIsModalOpen(false)}>Cancel</button>
+                        <button className="category-btn black-border cursor-pointer" onClick={handleDelete}>Delete</button>
+                    </div>
+                </form> 
+            </div>
         </div>
     );
 }
 
-export function AddModal({ type, parentId, onAdd }:{type: string, parentId:string, onAdd: (data:NodeInput) => void}){
+export function AddModal({ type, parentId, setIsModalOpen, onAdd }:{type: string, parentId:string, setIsModalOpen:(open:boolean) => void, onAdd: (data:NodeInput) => void}){
     const [name, setName] = useState("");
     const [url, setURL] = useState("");
     const [image, setImage] = useState("");
@@ -126,17 +146,27 @@ export function AddModal({ type, parentId, onAdd }:{type: string, parentId:strin
 
     return (
         <div>
-            <form className="flex flex-col gap-4">
-                <div>
-                    <label>Name</label>
-                    <input className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={name} onChange={(e) => setName(e.target.value)} />
-                </div>
-                {type === "file" && <AddFile fileData={{url, image, description}} handleURL={setURL} handleDescription={setDescription} handleImage={setImage} />}
-                    <div className="flex justify-end gap-7">
-                        <button>Cancel</button>
-                        <button className="category-btn black-border cursor-pointer" onClick={handleAdd}>Ok</button>
+            <div className="flex gap-2 justify-between">
+                <h1 className="text-2xl">Add {type}</h1>
+                <button onClick={() => setIsModalOpen(false)} className="self-end rounded-3xl hover:bg-(--bg-400) cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-x" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </button>
+            </div>
+            <div className="py-5">
+                <form className="flex flex-col gap-4">
+                    <div>
+                        <label>Name</label>
+                        <input className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={name} onChange={(e) => setName(e.target.value)} />
                     </div>
-            </form>
+                    {type === "file" && <AddFile fileData={{url, image, description}} handleURL={setURL} handleDescription={setDescription} handleImage={setImage} />}
+                        <div className="flex justify-end gap-7">
+                            <button className="cursor-pointer" onClick={() => setIsModalOpen(false)}>Cancel</button>
+                            <button className="category-btn black-border cursor-pointer" onClick={handleAdd}>Ok</button>
+                        </div>
+                </form>
+            </div>
         </div>
     );
 }

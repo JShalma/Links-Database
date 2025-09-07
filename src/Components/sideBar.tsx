@@ -35,7 +35,7 @@ export default function SideBar(){
                      <span>Add Folder</span>
                 </button>
             </div>
-            { isModalOpen && <Modal setIsModalOpen={setIsModalOpen}><AddModal parentId={currentFolder.id} type={addType} onAdd={addItem} /></Modal>}
+            { isModalOpen && <Modal><AddModal setIsModalOpen={setIsModalOpen} parentId={currentFolder.id} type={addType} onAdd={addItem} /></Modal>}
         </aside>
     );
 }

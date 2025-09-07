@@ -30,11 +30,11 @@ export default function FolderPage(){
         if (currentFolder.type === "folder"){
             const selectedItem = currentFolder.children.find((element) => element.id === isSelected); 
             if (modeType === 1){
-                return <DeleteModal content={selectedItem ?? currentFolder} onDelete={deleteItem} />
+                return <DeleteModal setIsModalOpen={setIsModalOpen} content={selectedItem ?? currentFolder} onDelete={deleteItem} />
             } 
             else if (modeType === 2){
                 if (currentFolder.type === "folder"){
-                    return <EditModal content={selectedItem ?? currentFolder} onModify={modifyItem} />;
+                    return <EditModal setIsModalOpen={setIsModalOpen} content={selectedItem ?? currentFolder} onModify={modifyItem} />;
                 }
             }
         }
@@ -64,7 +64,7 @@ export default function FolderPage(){
                     {currentFolder.type === "folder" && currentFolder.children.map((child) => child.type === "file" && <File content={child} key={child.id} isSelected={isSelected === child.id} onSelect={(value:string) => setIsSelected(value)} /> )}
                 </div>
             </article>
-            { isModalOpen && <Modal setIsModalOpen={setIsModalOpen}>{displayModalContent()}</Modal>}
+            { isModalOpen && <Modal>{displayModalContent()}</Modal>}
 
         </section>
     </div>
