@@ -11,7 +11,7 @@ import EditModal, { DeleteModal } from "@/components/modalContent";
 
 // { params } : { params : {id : string}}
 export default function FolderPage(){
-    const { currentFolder, breadcrumbs } = useFolderTree();
+    const { currentFolder, breadcrumbs, modifyItem } = useFolderTree();
     const [isSelected, setIsSelected] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [ modeType, setModeType ] = useState(0);
@@ -31,9 +31,8 @@ export default function FolderPage(){
             return <DeleteModal/>
         } 
         else if (modeType === 2){
-            console.log(isSelected, currentFolder);
             if (currentFolder.type === "folder"){
-                return <EditModal content={currentFolder.children.find((element) => element.id === isSelected) ?? currentFolder} />;
+                return <EditModal content={currentFolder.children.find((element) => element.id === isSelected) ?? currentFolder} onModify={modifyItem} />;
             }
         }
         else if (modeType === 3){
@@ -50,7 +49,7 @@ export default function FolderPage(){
             <article className="pt-5">
                 <div className={`h-11 ${isSelected && "black-border category-btn min-w-full"}`}>
                     {isSelected ? <EditPanel onEdit={(modeType:number) => {setIsModalOpen(true); setModeType(modeType)}} onClose={() => setIsSelected('') } /> :
-                    <h1 className="category-btn black-border">Folders</h1>
+                    <h1 className="h-full underline flex items-end text-lg underline-offset-4">Folders</h1>
                     }
                 </div>
                 {checkEmpty("folder")}
@@ -59,13 +58,12 @@ export default function FolderPage(){
                 </div>
             </article>
             <article className="pt-5">
-                <h2 className="category-btn black-border">Files</h2>
+                <h2 className="h-full underline flex items-end text-lg underline-offset-4">Files</h2>
                 {checkEmpty("file")}
                 <div className="grid grid-auto-rows-fr grid-cols-4 gap-4">
                     {currentFolder.type === "folder" && currentFolder.children.map((child) => child.type === "file" && <File content={child} key={child.id} isSelected={isSelected === child.id} onSelect={(value:string) => setIsSelected(value)} /> )}
                 </div>
             </article>
-            {/* <button onClick={() => setIsModalOpen(true)} style={{cursor: "pointer", backgroundColor:"red"}}>Open Button</button> */}
             { isModalOpen && <Modal setIsModalOpen={setIsModalOpen}>{displayModalContent()}</Modal>}
 
         </section>

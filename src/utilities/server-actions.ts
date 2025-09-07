@@ -84,6 +84,7 @@ export async function deleteFile(fileId: string) {
 }
 
 export async function modifyFolder(folderId:string, folderName:string) {
+    console.log(folderId, folderName);
     const modifiedFolder = await prisma.item.update({
         where: {id : folderId},
         data: {name: folderName}

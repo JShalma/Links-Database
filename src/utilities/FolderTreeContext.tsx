@@ -75,7 +75,8 @@ export function FolderTreeProvider({ children, initialTree, currentFolderId } : 
             node = {...result, type: "file"};
         }
         else {
-            result = await modifyFolder(data.id ?? "", data.parentId);
+            // console.log(data.id);
+            result = await modifyFolder(data.id ?? "", data.name);
             node = {...result, children: [], type:"folder"}
         }
 

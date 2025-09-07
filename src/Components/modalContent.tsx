@@ -1,31 +1,69 @@
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { TreeNode } from "./types";
+import { NodeInput } from "@/types/data";
 
 type dataFile = {
-    url: string | undefined,
-    image: string | undefined,
-    description: string | undefined
+    url: string,
+    image: string,
+    description: string
 }
 
-export default function EditModal({ content } : { content: TreeNode }){
+export default function EditModal({ content, onModify } : { content: TreeNode, onModify: (data:NodeInput) => void }){
     const [name, setName] = useState(content.name);
 
-    const [url, setURL] = useState(content.type === "file" ? content.fileData?.url : "");
-    const [image, setImage] = useState(content.type === "file" ? content.fileData?.img : "");
-    const [description, setDescription] = useState(content.type === "file" ? content.fileData?.description : "");
+    const [url, setURL] = useState(() => {
+        if (content.type === "file") {
+            if (content.fileData?.url === undefined){
+                return ""
+            }
+            return content.fileData?.url 
+        } 
+        return "";
+    });
+    const [image, setImage] = useState(() => {
+        if (content.type === "file") {
+            if (content.fileData?.img === undefined){
+                return "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+            }
+            return content.fileData?.img;
+        } 
+        return "";
+    });
+    const [description, setDescription] = useState(() => {
+        if (content.type === "file") {
+            if (content.fileData?.description === undefined){
+                return ""
+            }
+            return content.fileData?.description; 
+        } 
+        return "";
+    });
+    
+    function handleSubmit(e:MouseEvent){
+        e.preventDefault();
+        console.log("Here is the final content: ")
+        if (content.type === "file"){
+            const {fileData, ...newObject} = content;
+            onModify({...newObject, parentId:content.parentId ?? "", name, img:image, url, description});
+        } else {
+            const {children, ...newObject} = content;
+            onModify({...newObject, parentId:content.parentId ?? "", name})
+
+        }
+    }
 
     return (
         <div>
-            <form>
-                <label>Name</label>
-                <input className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={name} onChange={(e) => setName(e.target.value)} />
-                {content.type === "file" && <EditFile fileData={{url: url, image: image, description: description}} handleURL={setURL} handleDescription={setDescription} handleImage={setImage} />}
-                <div className="float-right mt-5"> 
-                    <div className="flex gap-7">
-                        <button>Cancel</button>
-                        <button className="category-btn black-border cursor-pointer">Ok</button>
-                    </div>
+            <form className="flex flex-col gap-4">
+                <div>
+                    <label>Name</label>
+                    <input className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={name} onChange={(e) => setName(e.target.value)} />
                 </div>
+                {content.type === "file" && <EditFile fileData={{url: url, image: image, description: description}} handleURL={setURL} handleDescription={setDescription} handleImage={setImage} />}
+                    <div className="flex justify-end gap-7">
+                        <button>Cancel</button>
+                        <button className="category-btn black-border cursor-pointer" onClick={handleSubmit}>Ok</button>
+                    </div>
             </form>
         </div>
     );
@@ -34,12 +72,18 @@ export default function EditModal({ content } : { content: TreeNode }){
 function EditFile({ fileData, handleURL, handleImage, handleDescription }: {fileData:dataFile, handleURL:(link:string) => void, handleImage:(img:string) => void, handleDescription:(desc:string) => void}){
     return (
         <>
-            <label>URL</label>
-            <input type="text" className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={fileData.url} onChange={(e) => handleURL(e.target.value)} />
-            <label>Image</label>
-            <input type="text" className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={fileData.image} onChange={(e) => handleImage(e.target.value)} />
-            <label>Description</label>
-            <input type="text" className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={fileData.description} onChange={(e) => handleDescription(e.target.value)} />
+            <div>
+                <label>URL</label>
+                <input type="text" className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={fileData.url} onChange={(e) => handleURL(e.target.value)} />
+            </div>
+            <div>
+                <label>Image</label>
+                <input type="text" className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={fileData.image} onChange={(e) => handleImage(e.target.value)} />
+            </div>
+            <div>
+                <label>Description</label>
+                <input type="text" className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={fileData.description} onChange={(e) => handleDescription(e.target.value)} />
+            </div>
         </>
     );
 }
@@ -47,10 +91,12 @@ function EditFile({ fileData, handleURL, handleImage, handleDescription }: {file
 export function DeleteModal(){
     return (
         <div>
-            {/* <h1>Confi</h1> */}
             <form>
-                <p>You will be unable to go back after deleting.</p>
-                <button>Delete</button>
+                <p>Are you sure you want to permanently delete the selected item? <br/><br/>You will be unable recover this item after deleting.</p>
+                <div className="flex justify-end gap-7 mt-5">
+                    <button className="cursor-pointer">Cancel</button>
+                    <button className="category-btn black-border cursor-pointer">Delete</button>
+                </div>
             </form> 
         </div>
     );
