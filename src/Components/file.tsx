@@ -43,7 +43,7 @@ export default function File({ content, isSelected, onSelect } : {content: FileN
                     </button>
                 </div>
                 <div className="black-border rounded-sm">
-                    <Image src={content.fileData?.img ?? ""} alt="Link preview" width={140} height={140} className="object-cover h-32 w-full rounded-sm" />
+                    <Image src={content.fileData?.img ?? ""} alt="Link preview" width={100} height={100} className="object-cover h-32 w-full rounded-sm" />
                 </div>
                 <p className="description w-fit self-center">{content.fileData?.description}</p>
             </div>

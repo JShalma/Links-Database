@@ -82,3 +82,8 @@ body {
   background-color: rgba(156, 225, 255, 1);
   cursor: pointer;
 }
+.add-btn{
+  background-color: var(--bg-100);
+  width: 75%;
+  padding: 0.5rem;
+}

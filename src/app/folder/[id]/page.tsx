@@ -11,7 +11,7 @@ import EditModal, { DeleteModal } from "@/components/modalContent";
 
 // { params } : { params : {id : string}}
 export default function FolderPage(){
-    const { currentFolder, breadcrumbs, modifyItem } = useFolderTree();
+    const { currentFolder, breadcrumbs, modifyItem, deleteItem } = useFolderTree();
     const [isSelected, setIsSelected] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [ modeType, setModeType ] = useState(0);
@@ -27,16 +27,16 @@ export default function FolderPage(){
     }
 
     function displayModalContent(){
-        if (modeType === 1){
-            return <DeleteModal/>
-        } 
-        else if (modeType === 2){
-            if (currentFolder.type === "folder"){
-                return <EditModal content={currentFolder.children.find((element) => element.id === isSelected) ?? currentFolder} onModify={modifyItem} />;
+        if (currentFolder.type === "folder"){
+            const selectedItem = currentFolder.children.find((element) => element.id === isSelected); 
+            if (modeType === 1){
+                return <DeleteModal content={selectedItem ?? currentFolder} onDelete={deleteItem} />
+            } 
+            else if (modeType === 2){
+                if (currentFolder.type === "folder"){
+                    return <EditModal content={selectedItem ?? currentFolder} onModify={modifyItem} />;
+                }
             }
-        }
-        else if (modeType === 3){
-            return "";
         }
     }
 
