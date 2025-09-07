@@ -50,6 +50,7 @@ export default function EditModal({ content, setIsModalOpen,  onModify } : { con
             onModify({...newObject, parentId:content.parentId ?? "", name})
 
         }
+        setIsModalOpen(false);
     }
 
     return (
@@ -62,6 +63,7 @@ export default function EditModal({ content, setIsModalOpen,  onModify } : { con
                     </svg>
                 </button>
             </div>
+            <hr className="mt-2"/>
             <div className="py-5">
                 <form className="flex flex-col gap-4">
                     <div>
@@ -71,7 +73,7 @@ export default function EditModal({ content, setIsModalOpen,  onModify } : { con
                     {content.type === "file" && <EditFile fileData={{url, image, description}} handleURL={setURL} handleDescription={setDescription} handleImage={setImage} />}
                         <div className="flex justify-end gap-7">
                             <button className="cursor-pointer" onClick={() => setIsModalOpen(false)}>Cancel</button>
-                            <button className="category-btn black-border cursor-pointer" onClick={handleSubmit}>Ok</button>
+                            <button className="bg-(--pink) p-1 px-3 rounded-lg cursor-pointer" onClick={handleSubmit}>Rename {content.type}</button>
                         </div>
                 </form>
             </div>
@@ -102,6 +104,7 @@ export function DeleteModal({ content, setIsModalOpen, onDelete } : { content: T
     function handleDelete(e: MouseEvent){
         e.preventDefault();
         onDelete(content.id, content.type);
+        setIsModalOpen(false);
     }
     return (
         <div>
@@ -113,12 +116,13 @@ export function DeleteModal({ content, setIsModalOpen, onDelete } : { content: T
                     </svg>
                 </button>
             </div>
+            <hr className="mt-2"/>
             <div className="py-5">
                 <form>
                     <p>Are you sure you want to permanently delete {content.name} {content.type}? <br/><br/>You will be unable recover this item after deleting.</p>
                     <div className="flex justify-end gap-7 mt-5">
                         <button className="cursor-pointer" onClick={() => setIsModalOpen(false)}>Cancel</button>
-                        <button className="category-btn black-border cursor-pointer" onClick={handleDelete}>Delete</button>
+                        <button className="bg-(--pink) p-1 px-3 rounded-lg cursor-pointer" onClick={handleDelete}>Delete</button>
                     </div>
                 </form> 
             </div>
@@ -129,7 +133,7 @@ export function DeleteModal({ content, setIsModalOpen, onDelete } : { content: T
 export function AddModal({ type, parentId, setIsModalOpen, onAdd }:{type: string, parentId:string, setIsModalOpen:(open:boolean) => void, onAdd: (data:NodeInput) => void}){
     const [name, setName] = useState("");
     const [url, setURL] = useState("");
-    const [image, setImage] = useState("");
+    const [image, setImage] = useState("https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png");
     const [description, setDescription] = useState("");
 
     
@@ -142,6 +146,7 @@ export function AddModal({ type, parentId, setIsModalOpen, onAdd }:{type: string
             onAdd({parentId, name, type:"folder"})
 
         }
+        setIsModalOpen(false);
     }
 
     return (
@@ -154,6 +159,7 @@ export function AddModal({ type, parentId, setIsModalOpen, onAdd }:{type: string
                     </svg>
                 </button>
             </div>
+            <hr className="mt-2"/>
             <div className="py-5">
                 <form className="flex flex-col gap-4">
                     <div>
@@ -163,7 +169,7 @@ export function AddModal({ type, parentId, setIsModalOpen, onAdd }:{type: string
                     {type === "file" && <AddFile fileData={{url, image, description}} handleURL={setURL} handleDescription={setDescription} handleImage={setImage} />}
                         <div className="flex justify-end gap-7">
                             <button className="cursor-pointer" onClick={() => setIsModalOpen(false)}>Cancel</button>
-                            <button className="category-btn black-border cursor-pointer" onClick={handleAdd}>Ok</button>
+                            <button className="bg-(--pink) p-1 px-3 rounded-lg cursor-pointer" onClick={handleAdd}>Add {type}</button>
                         </div>
                 </form>
             </div>

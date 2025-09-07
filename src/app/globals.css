@@ -5,10 +5,17 @@
   /* --background:#F8F9FA ;
   --accent-gray:#F1F3F5; */
   /* --accent-gray: #f2efee; */
-  --bg-100: #F8FAFC;
+  /* --bg-100: #F8FAFC;
   --bg-200: #F9F9F7;
   --bg-300: #FDF8F3;
-  --bg-400: #FCF4EA;
+  --bg-400: #FCF4EA; */
+  --bg-100: #FFFFFF;
+  --bg-200: #F8FAFD;
+  --bg-300: #F1F4F8;
+  --bg-400: #DFE2E6;
+  --bg-500: #D3D7DB;
+
+  --accent-100: #C9E6FC;
   --font-color: #000000;
   --orange: #FF925A;
   --blue:#9CE1FF;
@@ -58,8 +65,7 @@ body {
   border: 2px solid var(--font-color);
 }
 .category-btn{
-  /* color: var(--blue); */
-  background-color: rgba(156, 225, 255, 0.5);
+  background-color: var(--bg-300);
   padding: 0.25rem 0.75rem;
   width: fit-content;
   border-radius: 25px;
@@ -70,16 +76,14 @@ body {
   color: rgba(0, 0, 0, 0.55);
 }
 .search-bar{
-  background-color: var(--bg-400);
+  background-color: var(--bg-300);
   width: 50%;
 }
 .breadcrumb:hover{
-  background-color: rgba(247, 154, 211, 0.15);
-  color: var(--pink);
-  /* padding: 0.25rem; */
+  background-color: rgba(247, 154, 211, 0.35);
 }
 .edit-btn:hover{
-  background-color: rgba(156, 225, 255, 1);
+  background-color: var(--bg-400);
   cursor: pointer;
 }
 .add-btn{
