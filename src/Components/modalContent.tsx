@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { TreeNode } from "./types";
 import { NodeInput } from "@/types/data";
 
@@ -43,12 +43,10 @@ export default function EditModal({ content, setIsModalOpen,  onModify } : { con
         e.preventDefault();
         if (content.type === "file"){
             const {fileData, ...newObject} = content;
-
             onModify({...newObject, parentId:content.parentId ?? "", name, img:image, url, description});
         } else {
             const {children, ...newObject} = content;
             onModify({...newObject, parentId:content.parentId ?? "", name})
-
         }
         setIsModalOpen(false);
     }
@@ -68,7 +66,7 @@ export default function EditModal({ content, setIsModalOpen,  onModify } : { con
                 <form className="flex flex-col gap-4">
                     <div>
                         <label>Name</label>
-                        <input className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={name} onChange={(e) => setName(e.target.value)} />
+                        <input required className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={name} onChange={(e) => setName(e.target.value)} />
                     </div>
                     {content.type === "file" && <EditFile fileData={{url, image, description}} handleURL={setURL} handleDescription={setDescription} handleImage={setImage} />}
                         <div className="flex justify-end gap-7">
@@ -86,7 +84,7 @@ function EditFile({ fileData, handleURL, handleImage, handleDescription }: {file
         <>
             <div>
                 <label>URL</label>
-                <input type="text" className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={fileData.url} onChange={(e) => handleURL(e.target.value)} />
+                <input required type="url" className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={fileData.url} onChange={(e) => handleURL(e.target.value)} />
             </div>
             <div>
                 <label>Image</label>
@@ -136,17 +134,41 @@ export function AddModal({ type, parentId, setIsModalOpen, onAdd }:{type: string
     const [image, setImage] = useState("https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png");
     const [description, setDescription] = useState("");
 
-    
+    const [incompleteError, setIncompleteError] = useState(false);
 
     function handleAdd(e:MouseEvent){
-        e.preventDefault();
-        if (type === "file"){
-            onAdd({ parentId, name, img:image, url, description, type});
-        } else {
-            onAdd({parentId, name, type:"folder"})
-
+        if (validateSubmission()){
+            console.log("WHYY")
+            e.preventDefault();
+            if (type === "file"){
+                onAdd({ parentId, name, img:image, url, description, type});
+            } else {
+                onAdd({parentId, name, type:"folder"})
+            }
+            setIsModalOpen(false);
+        } 
+        else{
+            setIncompleteError(true);
+            e.preventDefault();
         }
-        setIsModalOpen(false);
+
+    }
+
+    function validateSubmission(){
+        if (type === "file"){
+            if (name.length == 0 || url.length == 0){
+                return false
+            } 
+            // else if (image.length == 0){
+            //     setImage("https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png");
+            // }
+            return true;
+        } else{
+            if (name.length == 0){
+                return false;
+            }
+            return true;
+        }
     }
 
     return (
@@ -167,10 +189,11 @@ export function AddModal({ type, parentId, setIsModalOpen, onAdd }:{type: string
                         <input className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={name} onChange={(e) => setName(e.target.value)} />
                     </div>
                     {type === "file" && <AddFile fileData={{url, image, description}} handleURL={setURL} handleDescription={setDescription} handleImage={setImage} />}
-                        <div className="flex justify-end gap-7">
-                            <button className="cursor-pointer" onClick={() => setIsModalOpen(false)}>Cancel</button>
-                            <button className="bg-(--pink) p-1 px-3 rounded-lg cursor-pointer" onClick={handleAdd}>Add {type}</button>
-                        </div>
+                    {incompleteError && <ModalError>Please complete the above inputs</ModalError>}
+                    <div className="flex justify-end gap-7">
+                        <button className="cursor-pointer" onClick={() => setIsModalOpen(false)}>Cancel</button>
+                        <button className="bg-(--pink) p-1 px-3 rounded-lg cursor-pointer" onClick={handleAdd}>Add {type}</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -194,5 +217,13 @@ export function AddFile({fileData, handleURL, handleImage, handleDescription}:{ 
                 <input type="text" className="bg-(--bg-400) black-border rounded-md py-1.5 px-2 w-full" value={fileData.description} onChange={(e) => handleDescription(e.target.value)} />
             </div>
         </>
+    );
+}
+
+export function ModalError({children}:{children:React.ReactNode}){
+    return (
+        <div className="bg-red-200 p-1 rounded-lg border-2 border-rose-400">
+            {children}
+        </div>
     );
 }
