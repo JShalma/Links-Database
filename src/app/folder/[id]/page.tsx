@@ -7,11 +7,11 @@ import Breadcrumb from "@/components/breadcrumbs";
 import { useState } from "react";
 import EditPanel from "@/components/editPanel";
 import Modal from "@/components/modal";
-import EditModal, { DeleteModal } from "@/components/modalContent";
+import EditModal, { DeleteModal, MoveModal } from "@/components/modalContent";
 
 // { params } : { params : {id : string}}
 export default function FolderPage(){
-    const { currentFolder, breadcrumbs, modifyItem, deleteItem } = useFolderTree();
+    const { currentFolder, breadcrumbs, modifyItem, deleteItem, moveItem } = useFolderTree();
     const [isSelected, setIsSelected] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [ modeType, setModeType ] = useState(0);
@@ -35,6 +35,11 @@ export default function FolderPage(){
             else if (modeType === 2){
                 if (currentFolder.type === "folder"){
                     return <EditModal setIsModalOpen={setIsModalOpen} content={selectedItem ?? currentFolder} onModify={modifyItem} />;
+                }
+            }
+            else if (modeType === 3){
+                if (currentFolder.type === "folder"){
+                    return <MoveModal setIsModalOpen={setIsModalOpen} content={selectedItem ?? currentFolder} onMove={moveItem} />;
                 }
             }
         }
@@ -65,6 +70,10 @@ export default function FolderPage(){
                 </div>
             </article>
             { isModalOpen && <Modal>{displayModalContent()}</Modal>}
+
+            {/* <button onClick={() => moveItem("4defdacf-8a1f-488d-aae3-469e6c60e261", "521c7303-b07b-4266-b46f-171caaed21df")}>
+                    MoveItem
+            </button> */}
 
         </section>
     </div>

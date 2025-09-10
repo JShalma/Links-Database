@@ -3,8 +3,8 @@
 import { TreeNode } from "@/components/types";
 import { BreadcrumbObj, NodeInput } from "@/types/data";
 import { createContext, useState, useContext, useEffect } from "react";
-import { addFile, addFolder, deleteFile, deleteFolder, modifyFile, modifyFolder } from "./server-actions";
-import { deleteNode, getFolder, insertNode, modifyNode, updateTree } from "./treeUtils";
+import { addFile, addFolder, deleteFile, deleteFolder, modifyFile, modifyFolder, moveFileAndFolder,  } from "./server-actions";
+import { deleteNode, getFolder, insertNode, modifyNode, moveNode, updateTree } from "./treeUtils";
 
 type FolderTreeContextType = {
     tree: TreeNode[];
@@ -13,7 +13,7 @@ type FolderTreeContextType = {
     addItem: (data: NodeInput) => void;
     deleteItem: (id: string, type: string) => void;
     modifyItem: (data: NodeInput) => void;
-    moveItem: () => void;
+    moveItem: (data:TreeNode, parentId:string) => void;
 }
 
 const FolderTreeContext = createContext<FolderTreeContextType | undefined>(undefined);
@@ -82,8 +82,34 @@ export function FolderTreeProvider({ children, initialTree, currentFolderId } : 
         const updatedTree = updateTree(tree, modifyNode, data.id ?? "", node);
         setTree(updatedTree);
      }
+
+     async function moveItem(node:TreeNode, updatedParentId:string) { 
+        // let result;
+        let updatedNode : TreeNode;
     
-    const moveItem = () => { console.log("Modify")};
+        // if (data.type === "file"){
+        //     result = await modifyFile(data.id ?? "", data.name, data.url, data.description, data.img, data.parentId);
+        //     node = {...result, type: "file"};
+        // }
+        // else {
+        //     result = await modifyFolder(data.id ?? "", data.name);
+        //     node = {...result, children: [], type:"folder"}
+        // }
+        const result = await moveFileAndFolder(node.id, updatedParentId);
+        // console.log(result);
+        if (node.type === "file"){
+            updatedNode = {...result, fileData: node.fileData, type: "file"}
+        } 
+        else {
+            updatedNode = {...result, children: [], type:"folder"}
+        }
+        // console.log(updatedNode);
+
+        const updatedTree = moveNode(tree, node, updatedParentId);
+        setTree(updatedTree);
+     }
+    
+    // const moveItem = () => { console.log("Modify")};
 
 
 

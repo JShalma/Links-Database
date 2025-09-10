@@ -105,3 +105,11 @@ export async function modifyFile(fileId:string, fileName:string, fileURL:string,
 
     return {...modifiedFile, fileData: modifiedFileData};
 }
+
+export async function moveFileAndFolder(itemId: string, updatedParentId:string) {
+    const moveItem = await prisma.item.update({
+        where: {id: itemId},
+        data: {parentId:updatedParentId}
+    })
+    return moveItem;
+}

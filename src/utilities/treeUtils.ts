@@ -36,29 +36,12 @@ export function insertNode(node:TreeNode, context:TreeNode){
 }
 
 export function deleteNode(){
-    console.log("Got this far for deleteNode");
     return null;
 }
 
 export function modifyNode(node:TreeNode, context:TreeNode){
     return {...context};
 }
-
-// export function getFolder(tree:TreeNode[], folderId:string){
-//     let folderContent;
-//     for (const node of tree){
-//         if (node.type === "folder"){
-//             if (node.id === folderId){
-//                 console.log("Yess, ", node.id);
-//                 folderContent = node;
-//                 break;
-//             } 
-//             console.log(node.name);
-//             folderContent = getFolder(node.children, folderId);
-//         }
-//     }
-//     return folderContent;
-// }
 
 export function getFolder(tree:TreeNode[], folderId:string){
     let folderNode = {};
@@ -73,13 +56,17 @@ export function getFolder(tree:TreeNode[], folderId:string){
                 const {folderNode:result, path:breadcrumbs} = getFolder(node.children, folderId);
                 if (Object.keys(result).length !== 0){
                     folderNode = result;
-                    // path.concat(breadcrumbs);
                     path.push({name: node.name, id: node.id}, ...breadcrumbs);
-
-                    // console.log(path);
                 }
             }
         }
     }
     return {folderNode, path};
+}
+
+export function moveNode(tree:TreeNode[], currenNode:TreeNode, updatedParentId:string){
+    const deleteTree = updateTree(tree, deleteNode, currenNode.id, currenNode);
+    const updatedNode = {...currenNode, parentId:updatedParentId}
+    const insertTree = updateTree(deleteTree, insertNode, updatedParentId, updatedNode);
+    return insertTree;
 }

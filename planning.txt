@@ -49,3 +49,29 @@ useState. But some useState might be optional.
 
 Clicking the btns opens the modal, but now how do I tell the modal which specific modalContent to render? Could create a state that can be
 updated based on what you click. Click delete would update state to 1, and if it's one render this item on the modal.
+
+
+MOVE NAVIGATION
+---------------
+* Allow file or folder to be moved into a different folder
+    * In PRISMA: change parentID of current file or folder
+    * In Tree: delete current node, rebuild at right node folder
+
+The tree function will loop through everything and find the right node. It deletes that node. Then it starts backtracking, as it backtracks
+it will be checking each node if it is a folder and if that folder matches the new parentid for the deleted node, it can insert that node
+into that folder.
+
+function (tree, deleteItemId, nodeWithNewParentId)
+    for (node in tree):
+        if node === folder:
+
+Updatefunction(callback = move)
+
+move:
+    // call updateTree with delete()
+    // call updateTree with insertNode()
+
+// updateTree w/ delete --> returns tree without node
+// updateTree w/ insert --> returns tree with item insertNode
+
+move: tree, updateParentId, currentNode
