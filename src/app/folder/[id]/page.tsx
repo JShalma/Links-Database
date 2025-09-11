@@ -4,7 +4,7 @@ import Folder from "@/components/folder";
 import { useFolderTree } from "@/utilities/FolderTreeContext";
 import File from "@/components/file";
 import Breadcrumb from "@/components/breadcrumbs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditPanel from "@/components/editPanel";
 import Modal from "@/components/modal";
 import EditModal, { DeleteModal, MoveModal } from "@/components/modalContent";
@@ -15,7 +15,13 @@ export default function FolderPage(){
     const [isSelected, setIsSelected] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [ modeType, setModeType ] = useState(0);
+    const [isHydrated, setIsHydrated] = useState(false);
 
+    useEffect(() => {
+        setIsHydrated(true);
+    }, []);
+
+    if (!isHydrated) return null;
 
     function checkEmpty(type:string){
         if (currentFolder.type === "folder"){
