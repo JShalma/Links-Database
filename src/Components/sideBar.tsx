@@ -4,11 +4,12 @@ import { MouseEvent, useState } from "react";
 import Modal from "./modal";
 import { AddModal } from "./modalContent";
 import { useFolderTree } from "@/utilities/FolderTreeContext";
+import FolderNavigation from "./folderNavigation";
 
 export default function SideBar(){
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [addType, setAddType] = useState("");
-    const { currentFolder, addItem } = useFolderTree();
+    const { currentFolder, tree, addItem } = useFolderTree();
 
     function handleAddClick(e:MouseEvent){
         e.preventDefault();
@@ -35,6 +36,7 @@ export default function SideBar(){
                      <span>Add Folder</span>
                 </button>
             </div>
+            <FolderNavigation tree={tree} />
             { isModalOpen && <Modal><AddModal setIsModalOpen={setIsModalOpen} parentId={currentFolder.id} type={addType} onAdd={addItem} /></Modal>}
         </aside>
     );

@@ -85,7 +85,7 @@ export function FolderTreeProvider({ children, initialTree, currentFolderId } : 
 
      async function moveItem(node:TreeNode, updatedParentId:string) { 
         // let result;
-        let updatedNode : TreeNode;
+        // let updatedNode : TreeNode;
     
         // if (data.type === "file"){
         //     result = await modifyFile(data.id ?? "", data.name, data.url, data.description, data.img, data.parentId);
@@ -95,14 +95,14 @@ export function FolderTreeProvider({ children, initialTree, currentFolderId } : 
         //     result = await modifyFolder(data.id ?? "", data.name);
         //     node = {...result, children: [], type:"folder"}
         // }
-        const result = await moveFileAndFolder(node.id, updatedParentId);
+        await moveFileAndFolder(node.id, updatedParentId);
         // console.log(result);
-        if (node.type === "file"){
-            updatedNode = {...result, fileData: node.fileData, type: "file"}
-        } 
-        else {
-            updatedNode = {...result, children: [], type:"folder"}
-        }
+        // if (node.type === "file"){
+        //     updatedNode = {...result, fileData: node.fileData, type: "file"}
+        // } 
+        // else {
+        //     updatedNode = {...result, children: [], type:"folder"}
+        // }
         // console.log(updatedNode);
 
         const updatedTree = moveNode(tree, node, updatedParentId);

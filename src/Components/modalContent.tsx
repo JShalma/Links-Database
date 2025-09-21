@@ -228,7 +228,7 @@ export function MoveModal({ content, setIsModalOpen, onMove } : { content: TreeN
     return (
          <div>
             <div className="flex gap-2 justify-between">
-                <h1 className="text-2xl">Move</h1>
+                <h1 className="text-2xl">Move &quot;{content.name}&quot;</h1>
                 <button onClick={() => setIsModalOpen(false)} className="self-end rounded-3xl hover:bg-(--bg-400) cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-x" viewBox="0 0 16 16">
                         <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
@@ -238,10 +238,18 @@ export function MoveModal({ content, setIsModalOpen, onMove } : { content: TreeN
             <hr className="mt-2"/>
             <div className="py-5">
                 <form className="flex flex-col gap-4">
-                    {content.name}
+                    <div className="flex items-center">
+                    <p>Current Location: </p>
+                    <span className="black-border rounded-2xl mx-2 p-1">{content.name}</span>
+                    </div>
+                    {/* <hr/> */}
+                    <div>
+                        All locations
+                    </div>
+                    {/* <hr/> */}
                     <div className="flex justify-end gap-7">
                         <button className="cursor-pointer" onClick={() => setIsModalOpen(false)}>Cancel</button>
-                        <button className="bg-(--pink) p-1 px-3 rounded-lg cursor-pointer" onClick={handleMove}>Move Item</button>
+                        <button className="bg-(--pink) p-1 px-3 rounded-lg cursor-pointer" onClick={handleMove}>Move</button>
                     </div>
                 </form>
             </div>

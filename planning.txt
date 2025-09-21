@@ -75,3 +75,20 @@ move:
 // updateTree w/ insert --> returns tree with item insertNode
 
 move: tree, updateParentId, currentNode
+
+FOLDER NAVIGATION
+-----------------
+* Get the whole tree
+    * Recurse through each folder
+        * Each folder has name + id for link
+    * if !folder
+        * Empty 
+
+* The first (root) folder always stays on the scene, all the following folders get recursed through
+
+* The side arrow + down arrow
+    * if side arrow clicked, display all the children folders for that specific folder
+    * if up arrow clicked, close all the children folders
+
+* Click on the link
+    * Highlight the item (current folder highlight!!)
