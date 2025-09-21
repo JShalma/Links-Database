@@ -53,15 +53,15 @@ export default function FolderPage(){
 
     return (
     <div className="flex-grow folder-page-bg rounded-2xl black-border mr-5 mb-3 overflow-y-scroll">
-        <section className="p-5 h-full">
-            
-            <Breadcrumb paths={[...breadcrumbs , {name: currentFolder.name, id: currentFolder.id}]} />
-   
+        <section className="h-full">
+            <div className="sticky top-0 w-full folder-page-bg px-5 py-4 border-b-2">
+                <Breadcrumb paths={[...breadcrumbs , {name: currentFolder.name, id: currentFolder.id}]} />
+            </div>
+            <div className="px-5 pb-5">
             <article className="pt-5">
                 <div className={`h-11 ${isSelected && "black-border category-btn min-w-full"}`}>
-                    {isSelected ? <EditPanel onEdit={(modeType:number) => {setIsModalOpen(true); setModeType(modeType)}} onClose={() => setIsSelected('') } /> :
-                    <h1 className="h-full underline flex items-end text-lg underline-offset-4">Folders</h1>
-                    }
+                    {isSelected ? <EditPanel onEdit={(modeType:number) => {setIsModalOpen(true); setModeType(modeType)}} onClose={() => setIsSelected('') }  /> : <h1 className="h-full underline flex items-end text-lg underline-offset-4">Folders</h1>
+                }
                 </div>
                 {checkEmpty("folder")}
                 <div className="grid grid-cols-4 gap-4">
@@ -76,6 +76,7 @@ export default function FolderPage(){
                 </div>
             </article>
             { isModalOpen && <Modal>{displayModalContent()}</Modal>}
+        </div>
 
             {/* <button onClick={() => moveItem("4defdacf-8a1f-488d-aae3-469e6c60e261", "521c7303-b07b-4266-b46f-171caaed21df")}>
                     MoveItem
