@@ -13,6 +13,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id         String  @id @default(uuid())
+  email      String? @unique
+  name       String? 
+  password   String? //optional for manual login
+  googleId   String? // store googleId
+  githubId   String? // store githubId
+  data       Item[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+}
+
 model Item {
   id String @id @default(uuid())
   name String
@@ -21,6 +34,9 @@ model Item {
   parent Item? @relation("ParentChild", fields:[parentId], references:[id])
   children Item[] @relation("ParentChild")
   fileData FileData?
+
+  userId String?
+  user   User? @relation(fields: [userId], references: [id])
 }
 
 model FileData {
