@@ -1,3 +1,4 @@
+import { AuthOptions } from "next-auth"
 // handles logins, sessions, cookies
 import NextAuth from "next-auth"
 // type of login-method (username/password, Google, ...)
@@ -10,7 +11,7 @@ import { prisma } from "@/lib/prisma"
 import bcrypt from "bcrypt"
 
 // handler responds to API function call (api/auth/*)
-const handler = NextAuth({
+export const authOptions : AuthOptions = {
     // store users, sessions, accounts inside prisma database
     adapter: PrismaAdapter(prisma),
     // providers like Google, Github, etc
@@ -28,6 +29,8 @@ const handler = NextAuth({
                     // user doesn't exist or user exists but didn't create a password
                     if(!user || !user.password) return null
                     // checks if password is correct
+                    const hashedPassword = await bcrypt.hash("mypassword", 10)
+                    console.log(hashedPassword)
                     const isValid = await bcrypt.compare(credentials.password, user?.password)
                     if(!isValid) return null
                     return user
@@ -35,7 +38,11 @@ const handler = NextAuth({
         })
     ],
     // session stored in database
-    session: {strategy: "database"}
-})
+    session: {strategy: "jwt"},
+    pages: {signIn: "/login"},
+}
 
+const handler = NextAuth(authOptions);
+// export const GET = handler
+// export const POST = handler
 export {handler as GET, handler as POST}
