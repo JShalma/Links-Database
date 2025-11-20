@@ -29,8 +29,6 @@ export const authOptions : AuthOptions = {
                     // user doesn't exist or user exists but didn't create a password
                     if(!user || !user.password) return null
                     // checks if password is correct
-                    const hashedPassword = await bcrypt.hash("mypassword", 10)
-                    console.log(hashedPassword)
                     const isValid = await bcrypt.compare(credentials.password, user?.password)
                     if(!isValid) return null
                     return user
