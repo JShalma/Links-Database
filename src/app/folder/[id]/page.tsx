@@ -64,14 +64,14 @@ export default function FolderPage(){
                 }
                 </div>
                 {checkEmpty("folder")}
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 ">
                     {currentFolder.type === "folder" && currentFolder.children.map((child) => child.type === "folder" && <Folder content={child} key={child.id} isSelected={isSelected === child.id} onSelect={(value:string) => setIsSelected(value)} /> )}
                 </div>
             </article>
             <article className="pt-5">
                 <h2 className="h-full underline flex items-end text-lg underline-offset-4">Files</h2>
                 {checkEmpty("file")}
-                <div className="grid grid-auto-rows-fr grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-auto-rows-fr gap-4">
                     {currentFolder.type === "folder" && currentFolder.children.map((child) => child.type === "file" && <File content={child} key={child.id} isSelected={isSelected === child.id} onSelect={(value:string) => setIsSelected(value)} /> )}
                 </div>
             </article>

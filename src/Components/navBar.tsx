@@ -2,7 +2,7 @@ import Profile from "./profile";
 
 export default function NavBar(){
     return (
-        <nav className="h-16 flex items-center w-full ">
+        <nav className="h-24 md:h-20 flex flex-none items-center w-full ">
             {/* <div className="h-full flex items-center px-5 gap-4"> */}
                 <div className="flex w-64 h-full px-5 items-center gap-4 flex-none">
                     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-box-arrow-up-left" viewBox="0 0 16 16">
