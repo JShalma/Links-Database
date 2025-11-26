@@ -23,21 +23,38 @@ export const authOptions : AuthOptions = {
             // handles submission of login-form
             async authorize(credentials) {
                 // validate input
-                if (!credentials?.email || !credentials.password) return null
+                if (!credentials?.email || !credentials.password) return null;
                 // find user in database
-                const user = await prisma.user.findUnique({ where: {email: credentials?.email } })
-                    // user doesn't exist or user exists but didn't create a password
-                    if(!user || !user.password) return null
-                    // checks if password is correct
-                    const isValid = await bcrypt.compare(credentials.password, user?.password)
-                    if(!isValid) return null
-                    return user
+                const user = await prisma.user.findUnique({ where: {email: credentials?.email } });
+                // user doesn't exist or user exists but didn't create a password
+                if(!user || !user.password) return null;
+                // checks if password is correct
+                const isValid = await bcrypt.compare(credentials.password, user?.password);
+                if(!isValid) return null;
+                return user;
             }
         })
     ],
     // session stored in database
     session: {strategy: "jwt"},
     pages: {signIn: "/login"},
+
+    callbacks: {
+        async jwt({ token, user}) {
+            if(user){
+                token.name = user.name;
+                token.email = user.email;
+            }
+            return token;
+        },
+        async session({ session, token }){
+            session.user = {
+                name: token.name as string,
+                email: token.email as string,
+            }
+            return session;
+        }
+    }
 }
 
 const handler = NextAuth(authOptions);
