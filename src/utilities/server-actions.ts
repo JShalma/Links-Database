@@ -1,11 +1,30 @@
 'use server';
 
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
+
+import { prisma } from "@/lib/prisma";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
+import { getSessionOrThrow } from "@/app/api/auth/getSessionOrThrow";
+
 
 export async function getAllFolders(){
+    const session = await getSessionOrThrow();
+    // const session = await getServerSession(authOptions);
+
+    // getSessionOrThrow
+
+    // if(!session?.user.id){
+    //     throw new Error("Not authenticated");
+    //     // return;
+    // }
+    
     const foldersData = await prisma.item.findMany({
+        where: {
+            userId: session.user.id,
+        },
         include: {
             fileData: true,
         },
@@ -23,22 +42,28 @@ export async function getAllFolders(){
 // }
 
 export async function addFolder(folderName:string, parentId:string) {
+    const session = await getSessionOrThrow();
+
     const newFolder = await prisma.item.create({
         data: {
             name: folderName,
             parentId,
-            type: 'folder'
+            type: 'folder',
+            userId: session.user.id,
         }
     })
     return newFolder;
 }
 
 export async function addFile(fileName:string, fileURL:string, fileDescription:string, fileImg:string, parentId:string) {
+    const session = await getSessionOrThrow();
+    
     const newFile = await prisma.item.create({
         data: {
             name: fileName,
             type: "file",
             parentId,
+            userId: session.user.id,
             fileData: {
                 create: {
                     url: fileURL,
@@ -55,6 +80,8 @@ export async function addFile(fileName:string, fileURL:string, fileDescription:s
 }
 
 export async function deleteFolder(folderId: string) {
+    // const session = await getSessionOrThrow();
+
     const deletedFolder = await prisma.item.delete({
         where: {
             id: folderId,
@@ -84,7 +111,7 @@ export async function deleteFile(fileId: string) {
 }
 
 export async function modifyFolder(folderId:string, folderName:string) {
-    console.log(folderId, folderName);
+    // console.log(folderId, folderName);
     const modifiedFolder = await prisma.item.update({
         where: {id : folderId},
         data: {name: folderName}

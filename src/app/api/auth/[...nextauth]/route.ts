@@ -9,6 +9,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/prisma"
 // turns passwords into hash
 import bcrypt from "bcrypt"
+import { use } from "react"
 
 // handler responds to API function call (api/auth/*)
 export const authOptions : AuthOptions = {
@@ -44,6 +45,7 @@ export const authOptions : AuthOptions = {
             if(user){
                 token.name = user.name;
                 token.email = user.email;
+                token.id = user.id;
             }
             return token;
         },
@@ -51,6 +53,7 @@ export const authOptions : AuthOptions = {
             session.user = {
                 name: token.name as string,
                 email: token.email as string,
+                id: token.id as string,
             }
             return session;
         }
